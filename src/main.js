@@ -1,14 +1,13 @@
 import './classes/boardCell/boardCell.css'
+import './classes/board/board.css'
 import './style.css'
-import {
-    BoardCell
-} from './classes/boardCell/boardCell.js'
+import { BoardCell } from './classes/boardCell/boardCell.js'
+import { Board } from './classes/board/board.js'
 
-document.querySelector('#app').innerHTML = `
-  <div id="test">
-  </div>`;
+document.querySelector('#app').innerHTML = `<div id="test"></div>`;
 
-const bc = new BoardCell(0);
-console.log(bc);
+//testing area
+const b = new Board();
+console.log(b);
 
-BoardCell.insertCellInto(document.querySelector('#test'), bc);
+document.querySelector('#test').appendChild(b.getNode());
