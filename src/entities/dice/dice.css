@@ -1,0 +1,24 @@
+.dice {
+    width:90px;
+    height:90px;
+    background: rgb(250,240,240);
+    border-radius: 10px;
+    padding:5px;
+    display: grid;
+    align-items: center;
+}
+.dice .dice-container {
+    display: grid;
+    grid-template-columns: 40px 40px;
+    grid-template-rows: 25px 25px 25px;
+    grid-column-gap:10px;
+    justify-items: center;
+    align-items: center;
+}
+.dice .dice-pip {
+    width:20px;
+    height:20px;
+    background: rgb(50, 30, 30);
+    border-radius: 15px;
+    border:1px solid red;
+}
