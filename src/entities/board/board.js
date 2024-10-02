@@ -1,3 +1,4 @@
+import { createNode, initNode } from '../../view/nodeGeneration/nodes.js';
 import { BoardCell } from "../boardCell/boardCell.js";
 import './board.css';
 
@@ -21,13 +22,11 @@ export class Board{
     }
     
     createNode() {
-        const div = document.createElement("div");
-        div.classList.add("board");
-        this._node = div;
+        this._node = createNode("div", {
+            className: "board"
+        });
     }
     fillNode() {
-        this._cells.forEach((cell) => {
-            this._node.appendChild(cell.node);
-        });
+        initNode(this._node, this._cells.map(cell => cell._node))
     }
 }
