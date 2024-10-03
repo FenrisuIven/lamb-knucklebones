@@ -1,4 +1,4 @@
-import { createNode, initNode } from '../../view/nodeGeneration/nodes.js';
+import { createNode, fillNode } from '../../view/nodeGeneration/nodes.js';
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import './boardCell.css';
 

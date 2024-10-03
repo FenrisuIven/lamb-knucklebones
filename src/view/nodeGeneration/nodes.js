@@ -1,12 +1,18 @@
 export function createNode(elemName, { 
     className = '', 
-    id ='' 
+    id = '',
+    textContent = ''
 }) {
-    const div = document.createElement(`${elemName}`);
-    div.className = className;
-    div.id = id;
-    return div;
+    const node = document.createElement(`${elemName}`);
+    node.className = className;
+    node.id = id;
+    node.textContent = textContent;
+    return node;
 }
-export function initNode(node, children = []) {
+export function fillNode(node, children = []) {
     children.forEach((elem) => node.appendChild(elem))
+}
+
+export function clearChildren(node) {
+    node.replaceChildren();
 }

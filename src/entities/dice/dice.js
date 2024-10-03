@@ -1,3 +1,4 @@
+import {clearChildren, createNode, fillNode} from '../../view/nodeGeneration/nodes.js';
 import './dice.css';
 
 export class Dice {
@@ -20,24 +21,16 @@ export class Dice {
         this.fillNode();
     }
     createNode() {
-        const div = document.createElement("div");
-        div.classList.add("dice");
-        this._node = div;
+        this._node = createNode("div", {
+            className: "dice"
+        });
     }
     fillNode() {
-        let count = 0;
-        this._node.replaceChildren()
-        const container = document.createElement("div");
-        container.classList.add("dice-container");
-        this._node.appendChild(container);
-        
-        Array.from( { length: this.currentScore }).forEach((elem, idx) => {
-            const pip = document.createElement("div");
-            if (this.currentScore === 5 && idx === 2) {
-                pip.style.gridColumn = 'span 2';
-            }
-            pip.classList.add(`dice-pip`);
-            container.appendChild(pip);
-        })
+        clearChildren(this._node)
+        fillNode(this._node, [
+            createNode("span", {
+                textContent: `${this.currentScore}`
+            })
+        ]);
     }
 }
