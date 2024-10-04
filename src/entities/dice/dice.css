@@ -22,3 +22,8 @@
     border-radius: 15px;
     border:1px solid red;
 }
+
+.dice .dummy {
+    width: 80px;
+    height: 80px;
+}

@@ -1,11 +1,13 @@
 import { createNode, fillNode } from '../../view/nodeGeneration/nodes.js';
 import { BoardCell } from "../boardCell/boardCell.js";
+import { Dice } from '../dice/dice.js'
 import './board.css';
 
 export class Board{
     _idx = null;
     _cells = [];
-    _currentScore = null
+    _dice = null;
+    _currentScore = null;
     _node = null;
 
     get node() {
@@ -14,17 +16,24 @@ export class Board{
     
     constructor(){
         this._idx = 0;
+        this.createDice();
         this.createCellsArray(9);
         this.createNode();
         this.fillNode();
+        console.log(this._cells)
     }
-
+    
+    createDice() {
+        this._dice = new Dice(`dice player-${this._idx}`);
+    }
+    
     createCellsArray(amountOfCells) {
-        this._cells = Array.from({ length: Math.floor(Math.sqrt(amountOfCells)) } )
+        const amountOfCols = Math.floor(Math.sqrt(amountOfCells))
+        this._cells = Array.from({ length: amountOfCols } )
             .map((_, outerIdx) => {
                 let currentCol = [];
                 Array.from({length: amountOfCells}).forEach((_, innerIdx) => 
-                    innerIdx % 3 === outerIdx ? currentCol.push(new BoardCell(innerIdx, this._idx)) : null)
+                    innerIdx % amountOfCols === outerIdx ? currentCol.push(new BoardCell(innerIdx, this._idx)) : null)
                 console.log(currentCol)
                 return currentCol;
             });
@@ -38,12 +47,21 @@ export class Board{
     fillNode() {
         const cellsArray = this._cells.flat().sort((a, b) => a._index - b._index);
         fillNode(this._node, cellsArray.map(elem => elem.node));
-        this._node.addEventListener("click", () => {
+        this._node.addEventListener("click", (e) => {
+            this.occupyFirstAvailableCell(e);
             this.updateScore();
             console.log(this._currentScore)
         });
     }
-
+    
+    occupyFirstAvailableCell(clickEventArgs) {
+        const { clientX } = clickEventArgs;
+        const { width } = this._node.getBoundingClientRect(); 
+        const collIdx = Math.floor(clientX / (width / this._cells.length));
+        const cell = this._cells[collIdx].findLast(elem => !elem.occupied);
+        cell.occupyCell(this._dice.currentScore);
+    }
+    
     updateScore() {
         this._currentScore = 0;
         this._cells.forEach(col => {

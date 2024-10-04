@@ -1,4 +1,4 @@
-import { createNode, fillNode } from '../../view/nodeGeneration/nodes.js';
+import {clearChildren, createNode, fillNode} from '../../view/nodeGeneration/nodes.js';
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import './boardCell.css';
 
@@ -51,15 +51,17 @@ export class BoardCell {
     }
     initNode() {
         this.updateSpanContents();
-        this.node.addEventListener("click", () => {
+        /*this.node.addEventListener("click", () => {
             // console.log(this)
             if (this.occupied) {
                 this.clearCell();
             }
             else {
-                this.occupyCell(1);
+                const playerDice = document.querySelector(`.player-${this._parentIdx}`);
+                if(!playerDice.children[0]) return;
+                this.occupyCell(playerDice.children[0].textContent);
             }
-        })
+        })*/
     }
     
     occupyCell(score) {

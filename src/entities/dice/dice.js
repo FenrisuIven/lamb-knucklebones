@@ -12,25 +12,36 @@ export class Dice {
     get node(){
         return this._node;
     }
+    get spanNode() {
+        return createNode("span", {
+            textContent: `${this.currentScore}`
+        });
+    }
     set score(value){
         this._currentScoreIdx = value - 1 === 0 ? 0 : value - 1;
         this.fillNode();
     }
-    constructor() {
-        this.createNode();
+    constructor(className) {
+        this.createNode(className);
         this.fillNode();
+        this.rerollOnClick();
     }
-    createNode() {
+    createNode(className) {
         this._node = createNode("div", {
-            className: "dice"
+            className: className
         });
     }
     fillNode() {
         clearChildren(this._node)
-        fillNode(this._node, [
-            createNode("span", {
-                textContent: `${this.currentScore}`
-            })
-        ]);
+        fillNode(this._node, [ this.spanNode ]);
+    }
+
+    rerollOnClick(){
+        this._node.addEventListener("click", () => {
+            const score = Math.floor(Math.random() * this._scores.length);
+            this.score = score < 1 ? 1 : score;
+            clearChildren(this._node);
+            fillNode(this._node, [ this.spanNode ]);
+        });
     }
 }

@@ -10,7 +10,7 @@ export function createNode(elemName, {
     return node;
 }
 export function fillNode(node, children = []) {
-    console.log(children)
+    // console.log(children)
     children.forEach((elem) => node.appendChild(elem))
 }
 
