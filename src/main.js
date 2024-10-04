@@ -12,4 +12,6 @@ console.log(dice)
 
 document.querySelector('#test').appendChild(board.node);
 document.querySelector('#test').appendChild(dice.node);
+
+//board.updateScore();
 dice.score = 4;

@@ -6,6 +6,7 @@ export class BoardCell {
     _index = null;
     _currentScore = null;
     _occupied = false;
+    _parentIdx = null;
 
     get index() {
         return this._index;
@@ -35,9 +36,10 @@ export class BoardCell {
 
         this._occupied = occupied;
     }
-    
-    constructor(idx) {
+
+    constructor(idx, parentIdx) {
         this.index = idx;
+        this._parentIdx = parentIdx;
         this.createNode();
         this.initNode();
     }
@@ -50,7 +52,7 @@ export class BoardCell {
     initNode() {
         this.updateSpanContents();
         this.node.addEventListener("click", () => {
-            console.log(this)
+            // console.log(this)
             if (this.occupied) {
                 this.clearCell();
             }
