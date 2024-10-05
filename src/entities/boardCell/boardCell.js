@@ -1,4 +1,7 @@
-import {clearChildren, createNode, fillNode} from '../../view/nodeGeneration/nodes.js';
+import { 
+    clearChildren, createNode, fillNode 
+} from '../../view/nodeGeneration/nodes.js';
+import { Dice_Dummy } from "../dice/dice_dummy.js";
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import './boardCell.css';
 
@@ -50,31 +53,38 @@ export class BoardCell {
         });
     }
     initNode() {
-        this.updateSpanContents();
         /*this.node.addEventListener("click", () => {
             // console.log(this)
             if (this.occupied) {
-                this.clearCell();
+                this.clear();
             }
             else {
                 const playerDice = document.querySelector(`.player-${this._parentIdx}`);
                 if(!playerDice.children[0]) return;
-                this.occupyCell(playerDice.children[0].textContent);
+                this.occupy(playerDice.children[0]);
             }
         })*/
     }
-    
-    occupyCell(score) {
-        this.currentScore = score;
+
+    occupy(dice) {
+        console.log(dice)
+        this.currentScore = dice.currentScore;
         this.occupied = true;
-        this.updateSpanContents();
+        this.insertDummyDice(dice);
     }
-    clearCell(score) {
+
+    clear() {
         this.currentScore = null;
         this.occupied = false;
-        this.updateSpanContents();
+        this.removeDummyDice();
     }
-    updateSpanContents = () => 
-        this.node.innerHTML = `<span>${this.index}: ${this.occupied} ${this.currentScore}</span>`;
+    
+    insertDummyDice(dice) {
+        const dummy = new Dice_Dummy(dice);
+        fillNode(this._node, [ dummy.node ], true);
+    }
+    removeDummyDice() {
+        clearChildren(this._node);
+    }
 }
 

@@ -49,17 +49,21 @@ export class Board{
         fillNode(this._node, cellsArray.map(elem => elem.node));
         this._node.addEventListener("click", (e) => {
             this.occupyFirstAvailableCell(e);
+            this._dice.reroll();
             this.updateScore();
             console.log(this._currentScore)
         });
     }
     
     occupyFirstAvailableCell(clickEventArgs) {
+        const colIdx = this.getTargetColumnIndex(clickEventArgs);
+        this._cells[colIdx].findLast(elem => !elem.occupied)?.occupy(this._dice);
+    }
+    
+    getTargetColumnIndex(clickEventArgs) {
         const { clientX } = clickEventArgs;
-        const { width } = this._node.getBoundingClientRect(); 
-        const collIdx = Math.floor(clientX / (width / this._cells.length));
-        const cell = this._cells[collIdx].findLast(elem => !elem.occupied);
-        cell.occupyCell(this._dice.currentScore);
+        const { width } = this._node.getBoundingClientRect();
+        return Math.floor(clientX / (width / this._cells.length))
     }
     
     updateScore() {

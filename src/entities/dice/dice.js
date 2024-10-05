@@ -24,7 +24,7 @@ export class Dice {
     constructor(className) {
         this.createNode(className);
         this.fillNode();
-        this.rerollOnClick();
+        this.reroll();
     }
     createNode(className) {
         this._node = createNode("div", {
@@ -36,12 +36,10 @@ export class Dice {
         fillNode(this._node, [ this.spanNode ]);
     }
 
-    rerollOnClick(){
-        this._node.addEventListener("click", () => {
-            const score = Math.floor(Math.random() * this._scores.length);
-            this.score = score < 1 ? 1 : score;
-            clearChildren(this._node);
-            fillNode(this._node, [ this.spanNode ]);
-        });
+    reroll(){
+        const score = Math.floor(Math.random() * this._scores.length);
+        this.score = score < 1 ? 1 : score;
+        clearChildren(this._node);
+        fillNode(this._node, [ this.spanNode ]);
     }
 }

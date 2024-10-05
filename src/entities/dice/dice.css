@@ -4,8 +4,8 @@
     background: rgb(250,240,240);
     border-radius: 10px;
     padding:5px;
-    display: grid;
-    align-items: center;
+    place-content: center;
+    text-align:center;
 }
 .dice .dice-container {
     display: grid;
@@ -15,15 +15,13 @@
     justify-items: center;
     align-items: center;
 }
-.dice .dice-pip {
-    width:20px;
-    height:20px;
-    background: rgb(50, 30, 30);
-    border-radius: 15px;
-    border:1px solid red;
-}
 
-.dice .dummy {
-    width: 80px;
-    height: 80px;
+.dice-dummy {
+    width:70px;
+    height:70px;
+    background: rgb(250,240,240);
+    border-radius: 10px;
+    padding: 5px;
+    place-content: center;
+    text-align:center;
 }

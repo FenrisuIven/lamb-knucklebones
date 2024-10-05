@@ -11,7 +11,7 @@ export class Dice_Dummy {
     
     createNode() {
         this.node = createNode("div", {
-            className: "dice dummy"
+            className: "dice-dummy"
         });
     }
     fillNode() {
