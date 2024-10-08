@@ -48,8 +48,9 @@ export class Board{
         const cellsArray = this._cells.flat().sort((a, b) => a._index - b._index);
         fillNode(this._node, cellsArray.map(elem => elem.node));
         this._node.addEventListener("click", (e) => {
-            this.occupyFirstAvailableCell(e);
-            this._dice.reroll();
+            if(this.occupyFirstAvailableCell(e)) {
+                this._dice.reroll();
+            }
             this.updateScore();
             console.log(this._currentScore)
         });
@@ -57,7 +58,10 @@ export class Board{
     
     occupyFirstAvailableCell(clickEventArgs) {
         const colIdx = this.getTargetColumnIndex(clickEventArgs);
-        this._cells[colIdx].findLast(elem => !elem.occupied)?.occupy(this._dice);
+        const targetCell = this._cells[colIdx].findLast(elem => !elem.occupied);
+        if(!targetCell) return false;
+        targetCell.occupy(this._dice)
+        return true
     }
     
     getTargetColumnIndex(clickEventArgs) {
