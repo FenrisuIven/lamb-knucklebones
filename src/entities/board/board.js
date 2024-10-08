@@ -9,18 +9,24 @@ export class Board{
     _dice = null;
     _currentScore = null;
     _node = null;
+    _blockInput = false;
 
     get node() {
         return this._node;
     }
     
-    constructor(){
+    constructor({ dice, blockInput }){
         this._idx = 0;
-        this.createDice();
         this.createCellsArray(9);
+        if(dice) {
+            this._dice = dice;
+        }
+        else {
+            this.createDice();
+        }
         this.createNode();
         this.fillNode();
-        console.log(this._cells)
+        this._blockInput = blockInput;
     }
     
     createDice() {
@@ -48,6 +54,7 @@ export class Board{
         const cellsArray = this._cells.flat().sort((a, b) => a._index - b._index);
         fillNode(this._node, cellsArray.map(elem => elem.node));
         this._node.addEventListener("click", (e) => {
+            if(this._blockInput) return;
             if(this.occupyFirstAvailableCell(e)) {
                 this._dice.reroll();
             }
