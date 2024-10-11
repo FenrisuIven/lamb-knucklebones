@@ -6,21 +6,23 @@ export class Dice {
     _currentScoreIdx = 0;
     _node = null;
     
-    get currentScore() {
-        return this._scores[this._currentScoreIdx];
-    }
+    
     get node(){
         return this._node;
     }
     get spanNode() {
         return createNode("span", {
-            textContent: `${this.currentScore}`
+            textContent: `${this.score}`
         });
+    }
+    get score() {
+        return this._scores[this._currentScoreIdx];
     }
     set score(value){
         this._currentScoreIdx = value - 1 === 0 ? 0 : value - 1;
         this.fillNode();
     }
+    
     constructor(className) {
         this.createNode(className);
         this.fillNode();
@@ -36,10 +38,14 @@ export class Dice {
         fillNode(this._node, [ this.spanNode ]);
     }
 
-    reroll(){
-        const score = Math.floor(Math.random() * this._scores.length);
+    reroll() {
+        const prevScore = this.score;
+        let score = Math.floor(Math.random() * this._scores.length);
+        
+        while(score === prevScore) {
+            // console.log('reroll')
+            score = Math.floor(Math.random() * this._scores.length);
+        }
         this.score = score < 1 ? 1 : score;
-        clearChildren(this._node);
-        fillNode(this._node, [ this.spanNode ]);
     }
 }

@@ -1,21 +1,23 @@
 export function createNode(elemName, { 
     className = '', 
     id = '',
-    textContent = ''
+    textContent = '',
+    children = []
 }) {
+    if(className === 'player-node-container') {/*console.log(children)*/
+    }
     const node = document.createElement(`${elemName}`);
     node.className = className;
     node.id = id;
     node.textContent = textContent;
+    if (children.length !== 0) fillNode(node, children)
     return node;
 }
 export function fillNode(node, children = [], clear) {
     if (clear) clearChildren(node);
-    // console.log(node)
     children.forEach((elem) => node.appendChild(elem))
 }
 
 export function clearChildren(node) {
-    // console.log(node)
     node.replaceChildren();
 }

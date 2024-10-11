@@ -10,13 +10,14 @@ export class Board{
     _currentScore = null;
     _node = null;
     _blockInput = false;
+    _boardFull = false;
 
     get node() {
         return this._node;
     }
     
-    constructor({ dice, blockInput }){
-        this._idx = 0;
+    constructor({ idx, dice, blockInput }){
+        this._idx = idx || 0;
         this.createCellsArray(9);
         if(dice) {
             this._dice = dice;
@@ -40,7 +41,6 @@ export class Board{
                 let currentCol = [];
                 Array.from({length: amountOfCells}).forEach((_, innerIdx) => 
                     innerIdx % amountOfCols === outerIdx ? currentCol.push(new BoardCell(innerIdx, this._idx)) : null)
-                console.log(currentCol)
                 return currentCol;
             });
     }
@@ -53,22 +53,21 @@ export class Board{
     fillNode() {
         const cellsArray = this._cells.flat().sort((a, b) => a._index - b._index);
         fillNode(this._node, cellsArray.map(elem => elem.node));
-        this._node.addEventListener("click", (e) => {
-            if(this._blockInput) return;
-            if(this.occupyFirstAvailableCell(e)) {
-                this._dice.reroll();
-            }
-            this.updateScore();
-            console.log(this._currentScore)
-        });
+    }
+    handleInputAttempt(event) {
+        if(this._blockInput) return false;
+        if(this.occupyFirstAvailableCell(event)) {
+            this._dice.reroll();
+        }
+        this.updateScore();
+        return true;
     }
     
     occupyFirstAvailableCell(clickEventArgs) {
         const colIdx = this.getTargetColumnIndex(clickEventArgs);
         const targetCell = this._cells[colIdx].findLast(elem => !elem.occupied);
-        if(!targetCell) return false;
-        targetCell.occupy(this._dice)
-        return true
+        targetCell?.occupy(this._dice)
+        return !!targetCell
     }
     
     getTargetColumnIndex(clickEventArgs) {
@@ -93,5 +92,11 @@ export class Board{
         array.forEach(elem => 
             elem.currentScore === val ? count++ : count);
         return count;   
+    }
+    
+    freeCells() {
+        const count = this._cells.flat().reduce((acc, cell) => 
+            cell.occupied ? ++acc : acc, 0)
+        return count < 9
     }
 }

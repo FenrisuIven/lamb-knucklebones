@@ -52,23 +52,10 @@ export class BoardCell {
             className: "board-cell" 
         });
     }
-    initNode() {
-        /*this.node.addEventListener("click", () => {
-            // console.log(this)
-            if (this.occupied) {
-                this.clear();
-            }
-            else {
-                const playerDice = document.querySelector(`.player-${this._parentIdx}`);
-                if(!playerDice.children[0]) return;
-                this.occupy(playerDice.children[0]);
-            }
-        })*/
-    }
+    initNode() { }
 
     occupy(dice) {
-        console.log(dice)
-        this.currentScore = dice.currentScore;
+        this.currentScore = dice.score;
         this.occupied = true;
         this.insertDummyDice(dice);
     }

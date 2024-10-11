@@ -6,10 +6,10 @@ document.querySelector('#app').innerHTML = `<div id="test"></div>`;
 const target = document.querySelector('#test');
 
 const turnsController = new TurnsController();
-console.log(turnsController)
-target.appendChild(turnsController.opponent.node)
+// console.log(turnsController)
+target.appendChild(turnsController.opponentNode)
 target.appendChild(turnsController.dice.node)
-target.appendChild(turnsController.player.node)
+target.appendChild(turnsController.playerNode)
 
 // const boardPC = new Board({blockInput: true});
 // const boardPlayer = new Board({dice: boardPC._dice, blockInput: false});

@@ -17,7 +17,7 @@ export class Dice_Dummy {
     fillNode() {
         fillNode(this.node, [
             createNode("span", {
-                textContent: `${this.dice.currentScore}`
+                textContent: `${this.dice.score}`
             })
         ]);
     }
