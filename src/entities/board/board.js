@@ -4,60 +4,59 @@ import { Dice } from '../dice/dice.js'
 import './board.css';
 
 export class Board{
-    _idx = null;
-    _cells = [];
-    _dice = null;
-    _currentScore = null;
+    idx = null;
+    cells = [];
+    dice = null;
+    currentScore = null;
     _node = null;
-    _blockInput = false;
-    _boardFull = false;
+    blockInput = false;
 
     get node() {
         return this._node;
     }
     
     constructor({ idx, dice, blockInput }){
-        this._idx = idx || 0;
+        this.idx = idx || 0;
         this.createCellsArray(9);
         if(dice) {
-            this._dice = dice;
+            this.dice = dice;
         }
         else {
             this.createDice();
         }
         this.createNode();
         this.fillNode();
-        this._blockInput = blockInput;
+        this.blockInput = blockInput;
     }
     
     createDice() {
-        this._dice = new Dice(`dice player-${this._idx}`);
+        this.dice = new Dice(`dice player-${this.idx}`);
     }
     
     createCellsArray(amountOfCells) {
         const amountOfCols = Math.floor(Math.sqrt(amountOfCells))
-        this._cells = Array.from({ length: amountOfCols } )
+        this.cells = Array.from({ length: amountOfCols } )
             .map((_, outerIdx) => {
                 let currentCol = [];
                 Array.from({length: amountOfCells}).forEach((_, innerIdx) => 
-                    innerIdx % amountOfCols === outerIdx ? currentCol.push(new BoardCell(innerIdx, this._idx)) : null)
+                    innerIdx % amountOfCols === outerIdx ? currentCol.push(new BoardCell(innerIdx, this.idx)) : null)
                 return currentCol;
             });
     }
     
     createNode() {
         this._node = createNode("div", {
-            className: `board ${this._idx}`
+            className: `board ${this.idx}`
         });
     }
     fillNode() {
-        const cellsArray = this._cells.flat().sort((a, b) => a._index - b._index);
-        fillNode(this._node, cellsArray.map(elem => elem.node));
+        const cellsArray = this.cells.flat().sort((a, b) => a.index - b.index);
+        fillNode(this.node, cellsArray.map(elem => elem.node));
     }
     handleInputAttempt(event) {
-        if(this._blockInput) return false;
+        if(this.blockInput) return false;
         if(this.occupyFirstAvailableCell(event)) {
-            this._dice.reroll();
+            this.dice.reroll();
         }
         this.updateScore();
         return true;
@@ -65,24 +64,24 @@ export class Board{
     
     occupyFirstAvailableCell(clickEventArgs) {
         const colIdx = this.getTargetColumnIndex(clickEventArgs);
-        const targetCell = this._cells[colIdx].findLast(elem => !elem.occupied);
-        targetCell?.occupy(this._dice)
+        const targetCell = this.cells[colIdx].findLast(elem => !elem.occupied);
+        targetCell?.occupy(this.dice)
         return !!targetCell
     }
     
     getTargetColumnIndex(clickEventArgs) {
         const { clientX } = clickEventArgs;
         const { width } = this._node.getBoundingClientRect();
-        return Math.floor(clientX / (width / this._cells.length))
+        return Math.floor(clientX / (width / this.cells.length))
     }
     
     updateScore() {
-        this._currentScore = 0;
-        this._cells.forEach(col => {
+        this.currentScore = 0;
+        this.cells.forEach(col => {
             col.forEach(elem => {
                 if (!elem.currentScore) return;
                 const amount = this.amountOfTimesNumIsPresent(col, elem.currentScore);
-                this._currentScore += elem.currentScore * amount || 0;
+                this.currentScore += elem.currentScore * amount || 0;
             })
         })
     }
@@ -95,7 +94,7 @@ export class Board{
     }
     
     freeCells() {
-        const count = this._cells.flat().reduce((acc, cell) => 
+        const count = this.cells.flat().reduce((acc, cell) => 
             cell.occupied ? ++acc : acc, 0)
         return count < 9
     }
