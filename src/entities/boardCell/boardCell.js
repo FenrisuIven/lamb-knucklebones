@@ -1,7 +1,7 @@
 import { 
     clearChildren, createNode, fillNode 
 } from '../../view/nodeGeneration/nodes.js';
-import { Dice_Dummy } from "../dice/dice_dummy.js";
+import { DiceDummy } from "../dice/diceDummy.js";
 import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import './boardCell.css';
 
@@ -9,7 +9,6 @@ export class BoardCell {
     _index = null;
     _currentScore = null;
     _occupied = false;
-    _parentIdx = null;
 
     get index() {
         return this._index;
@@ -40,11 +39,9 @@ export class BoardCell {
         this._occupied = occupied;
     }
 
-    constructor(idx, parentIdx) {
+    constructor(idx) {
         this.index = idx;
-        this._parentIdx = parentIdx;
         this.createNode();
-        this.initNode();
     }
     
     createNode() {
@@ -52,7 +49,6 @@ export class BoardCell {
             className: "board-cell" 
         });
     }
-    initNode() { }
 
     occupy(dice) {
         this.currentScore = dice.score;
@@ -67,7 +63,7 @@ export class BoardCell {
     }
     
     insertDummyDice(dice) {
-        const dummy = new Dice_Dummy(dice);
+        const dummy = new DiceDummy(dice);
         fillNode(this._node, [ dummy.node ], true);
     }
     removeDummyDice() {
