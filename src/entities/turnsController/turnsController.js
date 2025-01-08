@@ -1,3 +1,4 @@
+import './playerContainer.css';
 import { Board } from "../board/board.js";
 import { Dice } from "../dice/dice.js";
 import { createNode } from "../../view/nodeGeneration/nodes.js";
@@ -58,9 +59,8 @@ export class TurnsController {
     updateDisplayScore(target, score) {
         const targetName = target.className.split('-')[0];
         if (!targetName) return;
-        const span = createNode('span', {
-            textContent: `${targetName} score: ${score}`
-        });
+        const span = document.querySelector(`.${target.className} .score-display`);
+        span.innerHTML = `${targetName}: ${score}`;
         target.replaceChild(span, target.children[Number(targetName === 'player')]);
     }
     
@@ -72,7 +72,8 @@ export class TurnsController {
                 className: `${name}-container`,
                 children: [ targetIsPlayer ? player.node : null, 
                     createNode('span', {
-                        textContent: `${name} score: `
+                        className: 'score-display',
+                        textContent: `${name}: `
                     }) ,
                     !targetIsPlayer ? opponent.node : null,
                 ],

@@ -1,8 +1,8 @@
 import './style.css'
 import { TurnsController } from "./entities/turnsController/turnsController.js";
 
-document.querySelector('#app').innerHTML = `<div id="test"></div>`;
-const target = document.querySelector('#test');
+document.querySelector('#app').innerHTML = `<div id="boards-container"></div>`;
+const target = document.querySelector('#boards-container');
 
 const turnsController = new TurnsController();
 //console.log(turnsController)

@@ -71,8 +71,8 @@ export class Board{
     
     getTargetColumnIndex(clickEventArgs) {
         const { clientX } = clickEventArgs;
-        const { width } = this._node.getBoundingClientRect();
-        return Math.floor(clientX / (width / this.cells.length))
+        const { width, left } = this._node.getBoundingClientRect();
+        return Math.floor((clientX - left) / (width / this.cells.length))
     }
     
     updateScore() {

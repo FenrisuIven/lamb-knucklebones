@@ -6,14 +6,8 @@
     padding:5px;
     place-content: center;
     text-align:center;
-}
-.dice .dice-container {
-    display: grid;
-    grid-template-columns: 40px 40px;
-    grid-template-rows: 25px 25px 25px;
-    grid-column-gap:10px;
-    justify-items: center;
-    align-items: center;
+    font-weight: 400;
+    line-height: 0;
 }
 
 .dice-dummy {

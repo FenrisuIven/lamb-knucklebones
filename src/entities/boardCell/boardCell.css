@@ -1,7 +1,9 @@
 .board-cell {
-    width: 100px;
-    height: 100px;
-    background-color: rgb(70, 150, 140);
+    width: 95px;
+    height: 85px;
+    padding: 0.2rem;
+    background-color: rgb(80, 30, 40);
+    border: 2px solid rgba(250,240,240, 0.3);
     display: inline-grid;
     align-content: center;
     justify-content: center

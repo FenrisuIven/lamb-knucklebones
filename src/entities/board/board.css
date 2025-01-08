@@ -1,5 +1,5 @@
 .board {
     display: grid;
     grid-template-areas: "a a a";
-    grid-gap: 5px;
+    grid-gap: 0 15px;
 }

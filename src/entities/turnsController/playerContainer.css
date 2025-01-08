@@ -1,0 +1,9 @@
+.player-container,.opponent-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.5rem;
+    .score-display {
+        color: rgba(250,240,240, 0.8);
+    }
+}
