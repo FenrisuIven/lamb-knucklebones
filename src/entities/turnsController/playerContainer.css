@@ -6,4 +6,13 @@
     .score-display {
         color: rgba(250,240,240, 0.8);
     }
+    
+    transition: 0.5s;
+}
+
+.inactive {
+    opacity: 50%;
+    translate: 0 -10px;
+    transform: scale(90%);
+    transition: 0.5s;
 }

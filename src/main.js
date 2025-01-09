@@ -6,6 +6,7 @@ const target = document.querySelector('#boards-container');
 
 const turnsController = new TurnsController();
 //console.log(turnsController)
-target.appendChild(turnsController.players.opponentNode)
+target.appendChild(turnsController.entities.opponentNode)
 target.appendChild(turnsController.dice.node)
-target.appendChild(turnsController.players.playerNode)
+target.appendChild(turnsController.entities.playerNode)
+
