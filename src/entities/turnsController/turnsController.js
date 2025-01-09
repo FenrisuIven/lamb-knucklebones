@@ -51,6 +51,7 @@ export class TurnsController {
         const targetNode = ctx.playerMove ? this.entities.playerNode : this.entities.opponentNode;
 
         this.updateDisplayScore(targetNode, ctx.target.currentScore);
+        if (!ctx.target.freeCells()) return this.endGame();
 
         this.blockInputForPlayer({
             entity: this.entities.opponent,
@@ -61,40 +62,41 @@ export class TurnsController {
             entityNode: this.entities.playerNode
         }, ctx.playerMove);
         
-        if (!ctx.target.freeCells()) return this.endGame();
     }
     
     blockInputForPlayer(target, isBlocked) {
         target.entity.blockInput = isBlocked;
-        if (isBlocked) {
-            target.entityNode.classList.add('inactive');
-        } else {
-            target.entityNode.classList.remove('inactive');
-        }
+        target.entityNode.disabled = isBlocked;
     }
     
     updateDisplayScore(target, score) {
         const targetName = target.className.split('-')[0];
         if (!targetName) return;
         const span = document.querySelector(`.${target.className} .score-display`);
-        span.innerHTML = `${targetName}: ${score}`;
+        span.innerHTML = `${score}`;
         target.replaceChild(span, target.children[Number(targetName === 'player')]);
     }
     
-    initPlayerNode(targetIsPlayer, setInactive) {
+    initPlayerNode(targetIsPlayer, setDisabled) {
         const { player, opponent } = this.entities;
         const name = targetIsPlayer ? 'player' : 'opponent';
         
-        return createNode('div',{
-                className: `${name}-container${setInactive ? ' inactive' : ''}`,
-                children: [ targetIsPlayer ? player.node : null, 
-                    createNode('span', {
-                        className: 'score-display',
-                        textContent: `${name}: `
-                    }) ,
-                    !targetIsPlayer ? opponent.node : null,
-                ],
-            })
+        const scoreDisplay = createNode('span', {
+            className: 'score-display',
+            textContent: `${name}: `
+        });
+        
+        const node = createNode('fieldSet',{
+            className: `${name}-container`,
+            children: [ 
+                targetIsPlayer ? player.node : null,
+                scoreDisplay,
+                !targetIsPlayer ? opponent.node : null,
+            ],
+        });
+        if (setDisabled) node.disabled = true;
+        
+        return node;
     }
     
     endGame() {
