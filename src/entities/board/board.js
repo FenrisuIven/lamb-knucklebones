@@ -55,18 +55,37 @@ export class Board{
     }
     handleInputAttempt(event) {
         if(this.blockInput) return false;
-        if(this.occupyFirstAvailableCell(event)) {
-            this.dice.reroll();
+        
+        const occupyFirstAvailableRes = this.occupyFirstAvailableCell(event);
+        
+        if(occupyFirstAvailableRes.status) {
+            
+        } else {
+            return false;
         }
         this.updateScore();
-        return true;
+        return occupyFirstAvailableRes;
     }
     
     occupyFirstAvailableCell(clickEventArgs) {
         const colIdx = this.getTargetColumnIndex(clickEventArgs);
         const targetCell = this.cells[colIdx].findLast(elem => !elem.occupied);
-        targetCell?.occupy(this.dice)
-        return !!targetCell
+        if (targetCell == null) return {
+            status: false
+        };
+        
+        targetCell.occupy(this.dice)
+        return {
+            status: true,
+            args: [ colIdx ]
+        };
+    }
+    
+    removeValueInCol(val, colIdx) {
+        const targetColumn = this.cells[colIdx]
+        const cellsToClear = targetColumn.filter(cell => cell._currentScore === val);
+        cellsToClear.forEach( cell => cell.clear() );
+        this.cells[colIdx] = targetColumn.filter(cell => cell._currentScore !== val);
     }
     
     getTargetColumnIndex(clickEventArgs) {

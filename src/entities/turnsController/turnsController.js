@@ -18,55 +18,73 @@ export class TurnsController {
         this.dice = new Dice(`dice controller-${this.idx}`);
         
         this.entities = {
-            player: new Board({
+            playerBoard: new Board({
                 idx: this.idx,
                 dice: this.dice,
                 blockInput: playerMovesFirst
             }),
-            opponent: new Board({
+            opponentBoard: new Board({
                 idx: this.idx,
                 dice: this.dice,
                 blockInput: !playerMovesFirst
             })
         };
 
-        this.entities.playerNode = this.initPlayerNode(true, playerMovesFirst);
-        this.entities.opponentNode = this.initPlayerNode(false, !playerMovesFirst);
+        this.entities.playerContainer = this.initPlayerNode(true, playerMovesFirst);
+        this.entities.opponentContainer = this.initPlayerNode(false, !playerMovesFirst);
         
         console.log('first to move: ' + (firstMove % 2 === 0 ? 'opponent' : 'player'));
     }
     addEventListeners() {
-        this.entities.opponentNode.addEventListener('click', (event) => this.handleMoveAttempt(event, { 
-            target: this.entities.opponent,
+        this.entities.opponentContainer.addEventListener('click', (event) => this.handleMoveAttempt(event, { 
+            target: this.entities.opponentBoard,
             playerMove: false
         }))
-        this.entities.playerNode.addEventListener('click', (event) => this.handleMoveAttempt(event, {
-            target: this.entities.player,
+        this.entities.playerContainer.addEventListener('click', (event) => this.handleMoveAttempt(event, {
+            target: this.entities.playerBoard,
             playerMove: true
         }))
     }
     
     handleMoveAttempt(event, ctx) {
-        if(!ctx.target.handleInputAttempt(event)) return;
-        const targetNode = ctx.playerMove ? this.entities.playerNode : this.entities.opponentNode;
+        const inputAttemptRes = ctx.target.handleInputAttempt(event);
+        if(!inputAttemptRes.status) return;
+        
+        let targetContainer = this.entities.playerContainer;
+        let opponentContainer = this.entities.opponentContainer;
+        let opponentBoard = this.entities.opponentBoard;
+        
+        if(!ctx.playerMove){
+            targetContainer = this.entities.opponentContainer;
+            opponentBoard = this.entities.playerBoard;
+            opponentContainer = this.entities.playerContainer;
+        }
+        
+        const opponentColumn = opponentBoard.cells[inputAttemptRes.args[0]];
+        if (opponentBoard.amountOfTimesNumIsPresent(opponentColumn, this.dice.score) !== 0) {
+            opponentBoard.removeValueInCol(this.dice.score, inputAttemptRes.args[0]);
+            opponentBoard.updateScore();
+            this.updateDisplayScore(opponentContainer, opponentBoard.currentScore);
+        }
 
-        this.updateDisplayScore(targetNode, ctx.target.currentScore);
+        this.updateDisplayScore(targetContainer, ctx.target.currentScore);
         if (!ctx.target.freeCells()) return this.endGame();
 
         this.blockInputForPlayer({
-            entity: this.entities.opponent,
-            entityNode: this.entities.opponentNode
+            entityBoard: this.entities.opponentBoard,
+            entityContainer: this.entities.opponentContainer
         }, !ctx.playerMove);
         this.blockInputForPlayer({
-            entity: this.entities.player,
-            entityNode: this.entities.playerNode
+            entityBoard: this.entities.playerBoard,
+            entityContainer: this.entities.playerContainer
         }, ctx.playerMove);
         
+        this.dice.reroll();
     }
     
     blockInputForPlayer(target, isBlocked) {
-        target.entity.blockInput = isBlocked;
-        target.entityNode.disabled = isBlocked;
+        target.entityBoard.blockInput = isBlocked;
+        target.entityContainer.disabled = isBlocked;
     }
     
     updateDisplayScore(target, score) {
@@ -78,7 +96,7 @@ export class TurnsController {
     }
     
     initPlayerNode(targetIsPlayer, setDisabled) {
-        const { player, opponent } = this.entities;
+        const { playerBoard, opponentBoard } = this.entities;
         const name = targetIsPlayer ? 'player' : 'opponent';
         
         const scoreDisplay = createNode('span', {
@@ -89,9 +107,9 @@ export class TurnsController {
         const node = createNode('fieldSet',{
             className: `${name}-container`,
             children: [ 
-                targetIsPlayer ? player.node : null,
+                targetIsPlayer ? playerBoard.node : null,
                 scoreDisplay,
-                !targetIsPlayer ? opponent.node : null,
+                !targetIsPlayer ? opponentBoard.node : null,
             ],
         });
         if (setDisabled) node.disabled = true;
@@ -100,11 +118,11 @@ export class TurnsController {
     }
     
     endGame() {
-        const { player, opponent } = this.entities;
-        const winnerName = player.currentScore > opponent.currentScore ? 'player' : 'opponent'
+        const { playerBoard, opponentBoard } = this.entities;
+        const winnerName = playerBoard.currentScore > opponentBoard.currentScore ? 'player' : 'opponent'
         console.log('Game ended! Winner is: ' + winnerName);
         
-        player.blockInput = true;
-        opponent.blockInput = true;
+        playerBoard.blockInput = true;
+        opponentBoard.blockInput = true;
     }
 }
