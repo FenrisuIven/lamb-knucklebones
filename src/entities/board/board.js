@@ -97,6 +97,11 @@ export class Board{
             col.forEach(elem => {
                 if (!elem.currentScore) return;
                 const amount = this.amountOfTimesNumIsPresent(col, elem.currentScore);
+                if (amount && amount > 1) {
+                    const dummyDice = elem.node.children[0];
+                    let comboName = amount === 2 ? 'two' : 'three';
+                    dummyDice.className = `dice-dummy combo-${comboName}`;
+                }
                 this.currentScore += elem.currentScore * amount || 0;
             })
         })
