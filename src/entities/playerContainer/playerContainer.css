@@ -18,3 +18,7 @@
         transition: 0.5s;
     }
 }
+
+.player-container {
+    flex-direction: column-reverse;
+}
