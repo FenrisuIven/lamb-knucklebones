@@ -8,12 +8,8 @@ export class Board{
     cells = [];
     dice = null;
     currentScore = null;
-    _node = null;
+    node = null;
     blockInput = false;
-
-    get node() {
-        return this._node;
-    }
     
     constructor({ idx, dice, blockInput }){
         this.idx = idx || 0;
@@ -45,11 +41,12 @@ export class Board{
     }
     
     createNode() {
-        this._node = createNode("div", {
+        this.node = createNode("div", {
             className: `board ${this.idx}`
         });
     }
     fillNode() {
+        console.log(this)
         const cellsArray = this.cells.flat().sort((a, b) => a.index - b.index);
         fillNode(this.node, cellsArray.map(elem => elem.node));
     }
@@ -83,14 +80,14 @@ export class Board{
     
     removeValueInCol(val, colIdx) {
         const targetColumn = this.cells[colIdx]
-        const cellsToClear = targetColumn.filter(cell => cell._currentScore === val);
+        const cellsToClear = targetColumn.filter(cell => cell.currentScore === val);
         cellsToClear.forEach( cell => cell.clear() );
-        this.cells[colIdx] = targetColumn.filter(cell => cell._currentScore !== val);
+        this.cells[colIdx] = targetColumn.filter(cell => cell.currentScore !== val);
     }
     
     getTargetColumnIndex(clickEventArgs) {
         const { clientX } = clickEventArgs;
-        const { width, left } = this._node.getBoundingClientRect();
+        const { width, left } = this.node.getBoundingClientRect();
         return Math.floor((clientX - left) / (width / this.cells.length))
     }
     

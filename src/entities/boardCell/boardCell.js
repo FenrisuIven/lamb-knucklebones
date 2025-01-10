@@ -6,37 +6,25 @@ import { ERROR_MESSAGES } from '../constants/errorMessages.js';
 import './boardCell.css';
 
 export class BoardCell {
-    _index = null;
-    _currentScore = null;
-    _occupied = false;
+    index = null;
+    currentScore = null;
+    occupied = false;
 
-    get index() {
-        return this._index;
-    }
-    get occupied (){
-        return this._occupied;
-    }
-    get currentScore() {
-        return this._currentScore;
-    }
-    get node() {
-        return this._node;
-    };
     set index (idx) {
         if (!Number.isInteger(idx)) throw new Error(ERROR_MESSAGES.NOT_AN_INTEGER);
         if (idx < 0) throw new RangeError(ERROR_MESSAGES.LESS_THAN_ZERO);
 
-        this._index = idx;
+        this.index = idx;
     }
     set currentScore(val) {
         if (val < 0) throw new RangeError(ERROR_MESSAGES.LESS_THAN_ZERO);
         
-        this._currentScore = val;
+        this.currentScore = val;
     }
     set occupied(occupied) {
         if (typeof occupied !== "boolean") throw new Error(ERROR_MESSAGES.NOT_A_BOOLEAN);
 
-        this._occupied = occupied;
+        this.occupied = occupied;
     }
 
     constructor(idx) {
@@ -45,7 +33,7 @@ export class BoardCell {
     }
     
     createNode() {
-        this._node = createNode("div", { 
+        this.node = createNode("div", { 
             className: "board-cell" 
         });
     }
@@ -64,10 +52,10 @@ export class BoardCell {
     
     insertDummyDice(dice) {
         const dummy = new DiceDummy(dice);
-        fillNode(this._node, [ dummy.node ], true);
+        fillNode(this.node, [ dummy.node ], true);
     }
     removeDummyDice() {
-        clearChildren(this._node);
+        clearChildren(this.node);
     }
 }
 

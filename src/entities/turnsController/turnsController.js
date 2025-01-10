@@ -91,10 +91,11 @@ export class TurnsController {
     }
     
     endGame() {
+        
         const winnerName = this.containers.player.board.currentScore > this.containers.opponent.board.currentScore ? 'player' : 'opponent'
         console.log('Game ended! Winner is: ' + winnerName);
-        
-        player.blockInput = true;
-        opponent.blockInput = true;
+
+        this.containers.player.board.blockInput = true;
+        this.containers.opponent.board.blockInput = true;
     }
 }
