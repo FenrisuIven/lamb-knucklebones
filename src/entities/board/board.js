@@ -46,7 +46,6 @@ export class Board{
         });
     }
     fillNode() {
-        console.log(this)
         const cellsArray = this.cells.flat().sort((a, b) => a.index - b.index);
         fillNode(this.node, cellsArray.map(elem => elem.node));
     }
@@ -83,6 +82,33 @@ export class Board{
         const cellsToClear = targetColumn.filter(cell => cell.currentScore === val);
         cellsToClear.forEach( cell => cell.clear() );
         this.cells[colIdx] = targetColumn.filter(cell => cell.currentScore !== val);
+        this.updateIndices(colIdx);
+    }
+    
+    updateIndices(colIdx) {
+        const col = this.cells[colIdx];
+        
+        setTimeout(() => function(){
+            for (let i = col.length - 1; i >= 0; i--) {
+                if (!col[i].occupied) {
+                    let firstOccupiedIdx = -1;
+                    
+                    col.forEach((cell, idx) => {
+                        if (idx === col[i].idx) return;
+                        if (cell.occupied) {
+                            firstOccupiedIdx = idx;
+                            return;
+                        }
+                    })
+                    if (firstOccupiedIdx === -1) return;
+
+                    const tempDice = new Dice();
+                    tempDice.score = col[firstOccupiedIdx].currentScore;
+                    col[i].occupy(tempDice);
+                    i--;
+                }
+            }
+        }, 2000);
     }
     
     getTargetColumnIndex(clickEventArgs) {

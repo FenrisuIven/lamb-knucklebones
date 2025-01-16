@@ -48,6 +48,7 @@ export class BoardCell {
         this.currentScore = null;
         this.occupied = false;
         this.removeDummyDice();
+        return this.node.children
     }
     
     insertDummyDice(dice) {
