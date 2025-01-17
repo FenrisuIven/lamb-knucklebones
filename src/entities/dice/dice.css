@@ -1,0 +1,33 @@
+:root{
+    --dice-highlight-combo-two: rgb(190, 170, 120);
+    --dice-highlight-combo-three: rgb(100, 170, 190);
+}
+
+.dice {
+    width:90px;
+    height:90px;
+    background: rgb(250,240,240);
+    border-radius: 10px;
+    padding:5px;
+    place-content: center;
+    text-align:center;
+    font-weight: 400;
+    line-height: 0;
+}
+
+.dice-dummy {
+    width:70px;
+    height:70px;
+    background: rgb(250,240,240);
+    border-radius: 10px;
+    padding: 5px;
+    place-content: center;
+    text-align:center;
+
+    &.combo-two {
+        background-color: var(--dice-highlight-combo-two);
+    }
+    &.combo-three {
+        background-color: var(--dice-highlight-combo-three);
+    }
+}

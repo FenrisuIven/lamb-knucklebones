@@ -1,0 +1,10 @@
+.board-cell {
+    width: 95px;
+    height: 85px;
+    padding: 0.2rem;
+    background-color: rgb(80, 30, 40);
+    border: 2px solid rgba(250,240,240, 0.3);
+    display: inline-grid;
+    align-content: center;
+    justify-content: center
+}

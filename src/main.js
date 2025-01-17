@@ -1,14 +1,12 @@
-import './classes/boardCell/boardCell.css'
 import './style.css'
-import {
-    BoardCell
-} from './classes/boardCell/boardCell.js'
+import { TurnsController } from "./entities/turnsController/turnsController.js";
 
-document.querySelector('#app').innerHTML = `
-  <div id="test">
-  </div>`;
+document.querySelector('#app').innerHTML = `<div id="boards-container"></div>`;
+const target = document.querySelector('#boards-container');
 
-const bc = new BoardCell(0);
-console.log(bc);
+const turnsController = new TurnsController();
+//console.log(turnsController)
+target.appendChild(turnsController.containers.opponent.node)
+target.appendChild(turnsController.dice.node)
+target.appendChild(turnsController.containers.player.node)
 
-BoardCell.insertCellInto(document.querySelector('#test'), bc);

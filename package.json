@@ -1,7 +1,9 @@
 {
   "name": "lamb-knucklebones",
   "private": true,
-  "version": "0.0.0",
+  "version": "pre-alpha v0.0.1",
+  "homepage": "https://github.com/FenrisuIven/lamb-knucklebones",
+  "author": "Fenrisulven",
   "type": "module",
   "scripts": {
     "dev": "vite",
